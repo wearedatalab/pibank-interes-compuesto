@@ -26,10 +26,11 @@
   const f0 = new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 });
   const f1 = new Intl.NumberFormat('en-US', { maximumFractionDigits: 1 });
   const f2 = new Intl.NumberFormat('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-  const fMonto = new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 });
+  const fMonto = { format: n => (Number.isInteger(n) ? f0 : f2).format(n) }; // 1,000 · 200.50 · 1,500.75
   const soles = (n, dec = 0) => 'S/' + NB + (dec ? f2.format(n) : f0.format(Math.round(n) || 0));
   // Para lectores de pantalla: «S/» se leería «S barra» y la coma de miles como decimal.
   const solesVoz = n => (Math.round(n) || 0) + ' soles';
+  const solesDato = n => (Number.isInteger(n) ? soles(n) : soles(n, 2)); // montos que tecleó la persona
   function solesCorto(n) {
     const corto = x => new Intl.NumberFormat('en-US', { maximumFractionDigits: x < 10 ? 1 : 0 }).format(x);
     if (n >= 1e6) return 'S/' + NB + corto(n / 1e6) + NB + 'M';
@@ -194,12 +195,12 @@
       play.setAttribute('aria-label', 'Reproducir: avanzar año por año');
       if (anunciar) vivo('labVivo', $('#labTexto').textContent, 150);
     }
-    function reproducir(hasta, ms) {
+    function reproducir(hasta, ms, anunciar) {
       play.classList.add('reproduciendo'); play.setAttribute('aria-label', 'Pausar');
       timer = setInterval(() => {
         const n = +rango.value + 1;
         render(n);
-        if (n >= hasta) parar(true);
+        if (n >= hasta) parar(anunciar !== false);
       }, ms);
     }
     play.addEventListener('click', () => {
@@ -216,7 +217,7 @@
     function arrancarIntro() {
       if (timer || +rango.value !== 0) return; // la persona ya interactuó
       if (reducido) { render(10); return; }
-      reproducir(10, 300);
+      reproducir(10, 300, false);
     }
     (function vigilar() {
       alVerse(barras, () => setTimeout(() => {
@@ -329,8 +330,9 @@
       estado.mensual = /^\s*-/.test(el.fMensual.value) ? 0 : clamp(leerMonto(el.fMensual.value), ...LIMITES.mensual); cambio('fMensual');
     });
     el.fTrea.addEventListener('input', () => {
-      const t = leerTasa(el.fTrea.value);
-      avisar('hTrea', t > LIMITES.trea[1] ? 'El máximo para simular es 12%. Usamos esa tasa.' : null);
+      const neg = /^\s*-/.test(el.fTrea.value);
+      const t = neg ? 0 : leerTasa(el.fTrea.value);
+      avisar('hTrea', neg ? 'Solo se pueden simular tasas positivas.' : t > LIMITES.trea[1] ? 'El máximo para simular es 12%. Usamos esa tasa.' : null);
       estado.trea = clamp(t, ...LIMITES.trea); cambio('fTrea');
     });
     [el.fInicial, el.fMensual, el.fTrea].forEach(i => {
@@ -362,14 +364,17 @@
       const v = visibles(u);
       const hipotetica = estado.trea !== TREA_PIBANK;
       $('#resAnios').textContent = anios(estado.anios);
-      $('#resTasa').textContent = tasaTexto(estado.trea) + ' TREA';
+      const tasaFrase = hipotetica ? 'una tasa hipotética de ' + tasaTexto(estado.trea) : tasaTexto(estado.trea) + ' TREA';
+      $('#resTasa').textContent = tasaFrase;
       $('#resHipo').hidden = !hipotetica;
-      $('#resHipo').textContent = hipotetica ? 'Tasa hipotética, solo para comparar. La Cuenta Soles Pibank paga 5% TREA.' : '';
+      $('#resHipo').textContent = hipotetica ? 'Solo para comparar: no corresponde a un producto de Pibank. La Cuenta Soles Pibank paga 5% TREA.' : '';
+      $('#miniTasa').textContent = hipotetica ? ' (tasa hipotética ' + tasaTexto(estado.trea) + ')' : '';
       $('#resCta').textContent = hipotetica ? 'Conoce la Cuenta Soles (5% TREA)' : 'Abre tu Cuenta Soles';
 
       const montoEl = $('#resSaldo');
       montoEl.textContent = soles(v.saldo);
       montoEl.classList.toggle('largo', montoEl.textContent.length > 11);
+      montoEl.classList.toggle('muy-largo', montoEl.textContent.length > 14);
       const mult = u.aportes > 0 ? u.saldo / u.aportes : 0;
       const fMult = mult >= 100 ? f0 : mult >= 2 ? f1 : f2;
       $('#resMult').textContent = 'Tu dinero ×' + fMult.format(mult);
@@ -383,8 +388,11 @@
       $('#insights').innerHTML = generarInsights(u).map(t => '<li>' + ICONO_IDEA + '<span>' + t + '</span></li>').join('');
       $('#miniSaldo').textContent = soles(v.saldo);
       $('#miniAnios').textContent = anios(estado.anios);
-      vivo('simVivo', 'En ' + anios(estado.anios) + ', con ' + tasaTexto(estado.trea) + ' TREA, tendrías ' + solesVoz(v.saldo) +
-        '. Pusiste ' + solesVoz(v.aportes) + ' y ' + solesVoz(v.ii) + ' son intereses de tus intereses.' + (hipotetica ? ' Tasa hipotética.' : ''), 900);
+      if (urlLista) {
+        const alertas = $$('.campo-ayuda.alerta').map(p => p.textContent).join(' ');
+        vivo('simVivo', (alertas ? alertas + ' ' : '') + 'En ' + anios(estado.anios) + ', con ' + tasaFrase + ', tendrías ' + solesVoz(v.saldo) +
+          '. Pusiste ' + solesVoz(v.aportes) + ' y ' + solesVoz(v.ii) + ' son intereses de tus intereses.', 900);
+      }
       dibujar(animarGrafico);
       animarGrafico = false;
       renderTabla();
@@ -412,12 +420,13 @@
       if (estado.mensual > 0) {
         const anual = estado.mensual * 12;
         const cruce = simular(Object.assign({}, estado, { anios: 60 })).find(f => f.interesAnio > anual);
-        if (cruce && cruce.anio <= estado.anios) {
+        if (cruce && cruce.anio === estado.anios && cruce.anio > 1) {
+          out.push('En el año <strong>' + cruce.anio + '</strong>, el último de tu plan, los intereses del año ya pondrían más que tú: superarían los ' + solesDato(anual) + ' que ahorras al año.');
+        } else if (cruce && cruce.anio <= estado.anios) {
           out.push('Desde ' + (cruce.anio === 1 ? 'el primer año' : 'el año <strong>' + cruce.anio + '</strong>') +
-            ', los intereses de cada año pondrían más que tú: superarían los ' + soles(anual) + ' que ahorras al año.');
+            ', los intereses de cada año pondrían más que tú: superarían los ' + solesDato(anual) + ' que ahorras al año.');
         } else if (cruce) {
-          out.push('Si sigues ahorrando ' + soles(estado.mensual) + ' al mes, desde el año <strong>' + cruce.anio +
-            '</strong> los intereses de cada año pondrían más que tú (más de ' + soles(anual) + ' al año).');
+          out.push('A este ritmo, desde el año <strong>' + cruce.anio + '</strong> los intereses de cada año pondrían más que tú (más de ' + solesDato(anual) + ' al año).');
         }
       } else if (estado.inicial > 0) {
         const dup = Math.log(2) / Math.log(1 + estado.trea / 100);
@@ -427,7 +436,7 @@
       if (estado.anios <= 30) {
         const vHoy = visibles(u), vMas = visibles(finalDe(Object.assign({}, estado, { anios: estado.anios + 10 })));
         if (vMas.ii > vHoy.ii) {
-          out.push((estado.mensual > 0 ? 'Si sigues ahorrando ' + soles(estado.mensual) + ' al mes <strong>10 años más</strong>'
+          out.push((estado.mensual > 0 ? 'Si sigues ahorrando ' + solesDato(estado.mensual) + ' al mes <strong>10 años más</strong>'
             : 'Si dejas tu dinero <strong>10 años más</strong>') +
             ', tus «intereses de tus intereses» pasarían de ' + soles(vHoy.ii) + ' a <strong>' + soles(vMas.ii) + '</strong>.');
         }
@@ -462,9 +471,9 @@
         return;
       }
       const H = W < 520 ? 250 : 310;
-      const m = { t: 12, r: 4, b: 30, l: W < 520 ? 54 : 66 };
-      const iw = W - m.l - m.r, ih = H - m.t - m.b;
       const esc = escala(Math.max.apply(null, filas.map(f => f.saldo)), 4);
+      const m = { t: 12, r: 4, b: 30, l: Math.max(W < 520 ? 54 : 66, solesCorto(esc.tope).length * 7 + 12) };
+      const iw = W - m.l - m.r, ih = H - m.t - m.b;
       const n = filas.length, banda = iw / n;
       const bw = Math.max(2, Math.min(32, banda * (n > 24 ? 0.72 : 0.6)));
       const y = v => m.t + ih - v / esc.tope * ih;
@@ -512,6 +521,7 @@
       sel = i;
       if (i < 0) { foco.setAttribute('visibility', 'hidden'); el.tip.hidden = true; return; }
       const f = filas[i], v = visibles(f);
+      const ganado = v.intereses - (i > 0 ? visibles(filas[i - 1]).intereses : 0);
       foco.setAttribute('x', (geo.m.l + i * geo.banda).toFixed(2));
       foco.setAttribute('visibility', 'visible');
       el.tip.innerHTML = '<b>Año ' + f.anio + '</b>' +
@@ -519,7 +529,7 @@
         '<div><span><i style="background:var(--g-simple)"></i>Intereses por tu dinero</span><span>' + soles(v.simple) + '</span></div>' +
         '<div><span><i style="background:var(--amarillo)"></i>Intereses de tus intereses</span><span>' + soles(v.ii) + '</span></div>' +
         '<div class="tip-saldo"><span>Saldo</span><span>' + soles(v.saldo) + '</span></div>' +
-        '<div><span>Ganado ese año</span><span>' + soles(f.interesAnio) + '</span></div>';
+        '<div><span>Ganado ese año</span><span>' + soles(ganado) + '</span></div>';
       el.tip.hidden = false;
       const svg = $('svg', el.grafico);
       const k = svg.getBoundingClientRect().width / geo.W;
@@ -530,7 +540,9 @@
       if (ancho < 480) {
         // En móvil no cabe al lado de la barra: va encima del gráfico (el dedo tapa lo de abajo)
         left = Math.max(0, (ancho - tw) / 2);
+        const techo = $('.cabecera').getBoundingClientRect().bottom + 8 - el.grafico.getBoundingClientRect().top;
         top = -th - 8;
+        if (top < techo) top = techo + th <= geo.H * k * 0.55 ? techo : geo.H * k + 8; // si no cabe arriba: bajo la cabecera o debajo del gráfico
       } else {
         left = cx + 14;
         if (left + tw > ancho) left = cx - tw - 14;
@@ -601,7 +613,12 @@
       new IntersectionObserver(([e]) => { formVisible = e.isIntersecting; actualizarMini(); }).observe($('#simForm'));
       new IntersectionObserver(([e]) => { resVisible = e.isIntersecting; actualizarMini(); }, { threshold: 0.2 }).observe($('.res-cab'));
     }
-    mini.addEventListener('click', () => $('.sim-resultado').scrollIntoView({ behavior: reducido ? 'auto' : 'smooth', block: 'start' }));
+    mini.addEventListener('click', () => {
+      const destino = $('.res-cab');
+      destino.tabIndex = -1;
+      destino.scrollIntoView({ behavior: reducido ? 'auto' : 'smooth', block: 'start' });
+      destino.focus({ preventScroll: true });
+    });
 
     /* ----- URL para compartir (sin borrar utm_*, gclid ni fbclid de la URL de llegada) ----- */
     let tUrl = 0;
@@ -680,8 +697,8 @@
     if (reducido) mostrar(); else alVerse(cont, mostrar, { threshold: 0.4 });
     const supera = dec.findIndex(x => x.int > x.ap);
     const ordinales = ['primera', 'segunda', 'tercera', 'cuarta'];
-    $('#decRemate').innerHTML = (supera >= 0 ? 'Desde la ' + ordinales[supera] + ' década, los intereses ya ponen más que tú. ' : '') +
-      'En la última ganas <strong>' + soles(dec[3].int) + '</strong>: ' + Math.round(dec[3].int / dec[0].int) +
+    $('#decRemate').innerHTML = (supera >= 0 ? 'Desde la ' + ordinales[supera] + ' década, los intereses ya pondrían más que tú. ' : '') +
+      'En la última ganarías <strong>' + soles(dec[3].int) + '</strong>: ' + Math.round(dec[3].int / dec[0].int) +
       ' veces lo de la primera, con el mismo esfuerzo.';
 
     // Regla del 72 (solo tasas iguales o menores a la de Pibank)
@@ -697,7 +714,7 @@
       html += '<span class="lt-marca" style="left:0">Hoy</span><span class="lt-marca" style="right:0">40 años</span>';
       $('#r72Linea').innerHTML = html;
       $('#r72Nota').innerHTML = 'Al ' + t + '%, en 40 años, S/' + NB + '1,000 se convertirían en <strong>' + soles(1000 * Math.pow(1 + t / 100, 40)) + '</strong>.' +
-        (t !== TREA_PIBANK ? ' Es una tasa de ejemplo, solo para comparar.' : '');
+        (t !== TREA_PIBANK ? ' Es una tasa hipotética, solo para comparar.' : '');
       chips72.forEach(c => c.setAttribute('aria-pressed', String(+c.dataset.tasa === t)));
     }
     chips72.forEach(c => c.addEventListener('click', () => render72(+c.dataset.tasa)));

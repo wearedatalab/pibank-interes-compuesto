@@ -17,7 +17,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <!-- Publicado dentro de pibank.pe, enlazar también css/gilroy-pibank.css para usar la tipografía de marca. -->
-<link rel="stylesheet" href="css/estilos.css?v=2">
+<link rel="stylesheet" href="css/estilos.css?v=3">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -28,18 +28,124 @@
       "applicationCategory": "FinanceApplication",
       "operatingSystem": "Web",
       "inLanguage": "es-PE",
-      "offers": {"@type": "Offer", "price": "0", "priceCurrency": "PEN"},
-      "publisher": {"@type": "Organization", "name": "Pibank", "url": "https://pibank.pe/"}
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "PEN"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Pibank",
+        "url": "https://pibank.pe/"
+      }
     },
     {
       "@type": "FAQPage",
       "mainEntity": [
-        {"@type": "Question", "name": "¿Qué es el interés compuesto?",
-         "acceptedAnswer": {"@type": "Answer", "text": "Es ganar intereses no solo sobre el dinero que depositas, sino también sobre los intereses que ese dinero ya generó. Los intereses se suman a tu saldo y desde ese momento también generan intereses."}},
-        {"@type": "Question", "name": "¿Qué es la TREA?",
-         "acceptedAnswer": {"@type": "Answer", "text": "Es la Tasa de Rendimiento Efectivo Anual. Sirve para comparar cuánto rinden en un año las cuentas de ahorro y los depósitos, porque además de la tasa de interés considera las comisiones y gastos del producto (no incluye impuestos como el ITF)."}},
-        {"@type": "Question", "name": "¿Por qué el largo plazo hace la diferencia?",
-         "acceptedAnswer": {"@type": "Answer", "text": "Porque cada año ganas intereses sobre un saldo más grande que el anterior. Ahorrando S/ 100 al mes al 5% TREA, en la cuarta década ganarías en intereses unas 16 veces lo que ganarías en la primera."}}
+        {
+          "@type": "Question",
+          "name": "¿Qué es el interés compuesto?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Es ganar intereses no solo sobre el dinero que depositas, sino también sobre los intereses que ese dinero ya generó. Cada vez que te pagan intereses, se suman a tu saldo y, desde ese momento, empiezan a trabajar contigo."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Por qué el largo plazo hace la diferencia?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Porque el interés compuesto se acelera con el tiempo: cada año ganas sobre un saldo más grande que el anterior. Los primeros años parecen lentos; los últimos son los que más rinden."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Qué es la TREA?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Es la Tasa de Rendimiento Efectivo Anual. Sirve para comparar cuánto rinden en un año las cuentas de ahorro y los depósitos, porque además de la tasa de interés considera las comisiones y gastos del producto (no incluye impuestos como el ITF). En las cuentas de ahorro se calcula con un ejemplo estándar: un monto referencial durante un año, sin movimientos adicionales a la apertura. Por eso es la tasa que conviene usar para comparar."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿En qué se diferencian la TEA y la TREA?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "La TEA (Tasa Efectiva Anual) es la tasa de interés que paga la cuenta en términos anuales. La TREA considera además las comisiones y gastos del producto. En la Cuenta Soles Pibank ambas son iguales, 5%, porque la cuenta no tiene comisiones ni gastos obligatorios asociados."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Cada cuánto se suman los intereses a mi cuenta?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "En la Cuenta Soles Pibank los intereses se calculan sobre tu saldo promedio del mes y se abonan el último día de cada mes. Desde ese momento forman parte de tu saldo y también generan intereses. Por eso el simulador los suma mes a mes."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Cómo calcula este simulador?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Convierte la TREA en su tasa mensual equivalente, (1 + TREA)^(1/12) − 1, y la aplica mes a mes sobre tu saldo, con los aportes al final de cada mes y sin retiros. Así, S/ 1,000 al 5% durante 12 meses se convierten en S/ 1,050.00, igual que en el ejemplo de la Cuenta Soles Pibank. Es una aproximación educativa: en la cuenta real los intereses se calculan sobre tu saldo promedio mensual con la TEA (base de 360 días), así que lo que recibas puede variar según las fechas de tus movimientos. Revisa el detalle en Fórmulas y ejemplos. Para separar los «intereses por tu dinero» de los «intereses de tus intereses», tomamos como referencia lo que cada depósito ganaría con interés simple: la TREA por el tiempo que lleva en la cuenta (por ejemplo, S/ 100 durante 2 años y medio al 5% ganarían S/ 12.50). Todo lo que ganas por encima de eso son «intereses de tus intereses». Como la TREA es la tasa de un año completo, mientras un depósito tiene menos de un año todo lo que gana cuenta como «intereses por tu dinero»: el efecto compuesto empieza a notarse desde el segundo año."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Funciona igual en las inversiones?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "El principio es el mismo: si reinviertes lo que ganas, tus ganancias también generan ganancias. La diferencia está en el riesgo. En una cuenta de ahorros conoces la TREA vigente y tu depósito está cubierto por el Fondo de Seguro de Depósitos, según su cobertura vigente. En inversiones como fondos mutuos o acciones, el rendimiento no está asegurado y puede ser negativo."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Qué pasa si retiro mis intereses?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Pierdes el efecto compuesto: los intereses que retiras dejan de generar nuevos intereses; si los retiras todos, tu dinero crece como con interés simple. Puedes disponer de tu dinero cuando lo necesites, pero mientras más tiempo lo dejes, más rinde."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿El interés compuesto también puede jugar en contra?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Sí, cuando tienes deudas. Los créditos también cobran intereses con tasas efectivas anuales (para compararlos se usa la TCEA) y, mientras más tiempo tardas en pagarlos, más intereses pagas en total: una deuda cara que arrastras por años puede costarte mucho más de lo que recibiste. Por eso conviene evitar las deudas caras y poner el tiempo a tu favor, ahorrando."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Los resultados están garantizados?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. Es una simulación referencial con fines educativos: supone que la tasa se mantiene igual durante todo el plazo, y las tasas pueden cambiar. Para conocer las condiciones vigentes, consulta el Tarifario y la Cartilla de Información."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Y la inflación?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "El simulador muestra montos nominales, es decir, soles de cada año futuro. Con la inflación los precios suben y esos soles alcanzan para menos. Por ejemplo, si la inflación promediara 2% al año (el centro del rango meta del BCRP), los S/ 81,538 que tendrías ahorrando S/ 100 al mes durante 30 años equivaldrían a unos S/ 45,000 de hoy. Por eso importa que tu dinero gane intereses: el dinero que no rinde pierde poder de compra."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Mi dinero está protegido?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Sí, hasta un monto máximo. Los depósitos de la Cuenta Soles Pibank están cubiertos por el Fondo de Seguro de Depósitos (FSD) hasta un monto máximo de cobertura que se actualiza cada trimestre; lo que supere ese monto no está cubierto. Consulta las condiciones y el monto vigente en fsd.org.pe."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Con cuánto puedo empezar en Pibank?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Desde el primer sol. La Cuenta Soles Pibank no tiene monto mínimo de apertura ni comisión de mantenimiento. Es una cuenta de ahorros 100% digital para personas naturales: si eres mayor de edad y tienes DNI, celular y correo electrónico, la abres en pibank.pe con «Hazte cliente»."
+          }
+        }
       ]
     }
   ]
@@ -178,7 +284,7 @@
           <div class="rango-envoltura">
             <label class="sr" for="labRango">Año</label>
             <input type="range" id="labRango" min="0" max="30" step="1" value="0" class="rango">
-            <div class="rango-marcas" aria-hidden="true"><span style="--pos:0">0</span><span style="--pos:.3333">10</span><span style="--pos:.6667">20</span><span style="--pos:1">30 años</span></div>
+            <div class="rango-marcas" aria-hidden="true"><span style="--pos:0">0</span><span style="--pos:.3333">10</span><span style="--pos:.6667">20</span><span style="--pos:1">30<span class="marca-suf"> años</span></span></div>
           </div>
         </div>
       </div>
@@ -265,15 +371,15 @@
         <div class="campo">
           <div class="campo-cab">
             <label for="rAnios">¿Por cuánto tiempo?</label>
-            <output class="campo-valor num" id="oAnios" for="rAnios">30 años</output>
+            <span class="campo-valor num" id="oAnios" aria-hidden="true">30 años</span>
           </div>
           <input type="range" class="rango" id="rAnios" min="1" max="40" step="1" value="30">
-          <div class="rango-marcas" aria-hidden="true"><span style="--pos:0">1 año</span><span style="--pos:.2308">10</span><span style="--pos:.4872">20</span><span style="--pos:.7436">30</span><span style="--pos:1">40 años</span></div>
+          <div class="rango-marcas" aria-hidden="true"><span style="--pos:0">1 año</span><span style="--pos:.2308">10</span><span style="--pos:.4872">20</span><span style="--pos:.7436">30</span><span style="--pos:1">40<span class="marca-suf"> años</span></span></div>
         </div>
       </form>
 
       <button type="button" class="sim-mini" id="simMini" hidden>
-        <span>En <b id="miniAnios">30 años</b> tendrías</span>
+        <span>En <b id="miniAnios">30 años</b><span id="miniTasa"></span> tendrías</span>
         <strong id="miniSaldo" class="num">S/&nbsp;0</strong>
       </button>
 
@@ -321,7 +427,7 @@
         <table>
           <caption class="sr">Evolución de tu ahorro año por año</caption>
           <thead>
-            <tr><th scope="col">Año</th><th scope="col">Lo que pusiste</th><th scope="col">Intereses del año</th><th scope="col">Intereses de tus intereses</th><th scope="col">Saldo</th></tr>
+            <tr><th scope="col">Año</th><th scope="col">Lo que pusiste</th><th scope="col">Intereses ganados ese año</th><th scope="col">Intereses de tus intereses (acumulado)</th><th scope="col">Saldo</th></tr>
           </thead>
           <tbody id="tablaCuerpo"></tbody>
         </table>
@@ -483,7 +589,7 @@
       </details>
       <details>
         <summary>¿Qué pasa si retiro mis intereses?</summary>
-        <p>Pierdes el efecto compuesto: los intereses que retiras dejan de generar nuevos intereses y tu dinero vuelve a crecer como con interés simple. Puedes disponer de tu dinero cuando lo necesites, pero mientras más tiempo lo dejes, más rinde.</p>
+        <p>Pierdes el efecto compuesto: los intereses que retiras dejan de generar nuevos intereses; si los retiras todos, tu dinero crece como con interés simple. Puedes disponer de tu dinero cuando lo necesites, pero mientras más tiempo lo dejes, más rinde.</p>
       </details>
       <details>
         <summary>¿El interés compuesto también puede jugar en contra?</summary>
@@ -495,7 +601,7 @@
       </details>
       <details>
         <summary>¿Y la inflación?</summary>
-        <p>El simulador muestra montos nominales, es decir, soles de cada año futuro. Con la inflación los precios suben y esos soles alcanzan para menos. Por ejemplo, si la inflación promediara 2% al año (el centro del rango meta del BCRP), los <span class="num" id="infNominal">S/&nbsp;81,538</span> del ejemplo de 30 años equivaldrían a unos <span class="num" id="infReal">S/&nbsp;45,000</span> de hoy. Por eso importa que tu dinero gane intereses: el dinero que no rinde pierde poder de compra.</p>
+        <p>El simulador muestra montos nominales, es decir, soles de cada año futuro. Con la inflación los precios suben y esos soles alcanzan para menos. Por ejemplo, si la inflación promediara 2% al año (el centro del rango meta del BCRP), los <span class="num" id="infNominal">S/&nbsp;81,538</span> que tendrías ahorrando S/&nbsp;100 al mes durante 30 años equivaldrían a unos <span class="num" id="infReal">S/&nbsp;45,000</span> de hoy. Por eso importa que tu dinero gane intereses: el dinero que no rinde pierde poder de compra.</p>
       </details>
       <details>
         <summary>¿Mi dinero está protegido?</summary>
@@ -567,6 +673,6 @@
 
 <div class="aviso" id="aviso" role="status" aria-live="polite"></div>
 
-<script src="js/simulador.js?v=2"></script>
+<script src="js/simulador.js?v=3"></script>
 </body>
 </html>
