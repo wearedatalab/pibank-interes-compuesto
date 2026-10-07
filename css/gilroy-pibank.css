@@ -1,0 +1,7 @@
+/* Tipografía de marca Pibank (Gilroy).
+   Solo funciona si la página se publica dentro de pibank.pe, donde el tema ya aloja estos archivos
+   con su licencia web. En otro dominio, pedir los archivos y la licencia al cliente y cambiar las rutas.
+   Enlazar ANTES de css/estilos.css: <link rel="stylesheet" href="css/gilroy-pibank.css"> */
+@font-face { font-family: 'Gilroy'; src: url('/wp-content/themes/pibank/_/fonts/Gilroy-Regular.woff') format('woff'); font-weight: 400; font-display: swap; }
+@font-face { font-family: 'Gilroy'; src: url('/wp-content/themes/pibank/_/fonts/Gilroy-SemiBold.woff') format('woff'); font-weight: 500 600; font-display: swap; }
+@font-face { font-family: 'Gilroy'; src: url('/wp-content/themes/pibank/_/fonts/Gilroy-Bold.woff') format('woff'); font-weight: 700 800; font-display: swap; }

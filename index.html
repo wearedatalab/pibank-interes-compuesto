@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="es-PE">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Simulador de interés compuesto | Pibank Perú</title>
+<meta name="description" content="Aprende qué es el interés compuesto y simula cuánto puede crecer tu dinero con la Cuenta Soles Pibank. Explicado claro, con tus propios números.">
+<meta name="theme-color" content="#ffffff">
+<!-- Vista previa de la propuesta: quitar noindex al publicar en pibank.pe -->
+<meta name="robots" content="noindex, nofollow">
+<meta property="og:locale" content="es_PE">
+<meta property="og:title" content="Tus intereses también pueden ganar intereses | Pibank">
+<meta property="og:description" content="Simula cuánto puede crecer tu dinero con el interés compuesto y descubre por qué el tiempo es tu mejor aliado.">
+<meta property="og:image" content="img/macetas.jpg">
+<link rel="icon" href="https://pibank.pe/wp-content/themes/pibank/_/img/icons/favicon-32x32.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<!-- Publicado dentro de pibank.pe, enlazar también css/gilroy-pibank.css para usar la tipografía de marca. -->
+<link rel="stylesheet" href="css/estilos.css?v=2">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "name": "Simulador de interés compuesto Pibank",
+      "applicationCategory": "FinanceApplication",
+      "operatingSystem": "Web",
+      "inLanguage": "es-PE",
+      "offers": {"@type": "Offer", "price": "0", "priceCurrency": "PEN"},
+      "publisher": {"@type": "Organization", "name": "Pibank", "url": "https://pibank.pe/"}
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {"@type": "Question", "name": "¿Qué es el interés compuesto?",
+         "acceptedAnswer": {"@type": "Answer", "text": "Es ganar intereses no solo sobre el dinero que depositas, sino también sobre los intereses que ese dinero ya generó. Los intereses se suman a tu saldo y desde ese momento también generan intereses."}},
+        {"@type": "Question", "name": "¿Qué es la TREA?",
+         "acceptedAnswer": {"@type": "Answer", "text": "Es la Tasa de Rendimiento Efectivo Anual. Sirve para comparar cuánto rinden en un año las cuentas de ahorro y los depósitos, porque además de la tasa de interés considera las comisiones y gastos del producto (no incluye impuestos como el ITF)."}},
+        {"@type": "Question", "name": "¿Por qué el largo plazo hace la diferencia?",
+         "acceptedAnswer": {"@type": "Answer", "text": "Porque cada año ganas intereses sobre un saldo más grande que el anterior. Ahorrando S/ 100 al mes al 5% TREA, en la cuarta década ganarías en intereses unas 16 veces lo que ganarías en la primera."}}
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+<a class="saltar" href="#simulador">Ir al simulador</a>
+
+<!-- ============ CABECERA ============ -->
+<header class="cabecera">
+  <div class="contenedor">
+    <a class="logo" href="https://pibank.pe/" aria-label="Pibank, ir al inicio">
+      <img src="img/logo-pibank-azul.svg" width="129" height="33" alt="Pibank">
+    </a>
+    <nav class="nav" aria-label="Secciones">
+      <a href="#que-es">¿Qué es?</a>
+      <a href="#simulador">Simulador</a>
+      <a href="#largo-plazo">Largo plazo</a>
+      <a href="#preguntas">Preguntas</a>
+    </nav>
+    <a class="btn btn--sm cabecera-cta" href="https://registro.pibank.pe/" target="_blank" rel="noopener">Hazte cliente</a>
+  </div>
+</header>
+
+<main id="contenido">
+
+<!-- ============ HERO ============ -->
+<section class="hero" aria-labelledby="hero-titulo">
+  <div class="contenedor hero-grid">
+    <div class="hero-texto">
+      <p class="etiqueta">Pibank te lo explica claro</p>
+      <h1 id="hero-titulo">Tus intereses también pueden <span class="subrayado">ganar intereses</span></h1>
+      <p class="hero-lead">Eso es el interés compuesto. Al comienzo casi no se nota; con los años, hace la mayor parte del trabajo. Te lo explicamos y lo puedes simular con tus propios números.</p>
+
+      <div class="pastilla hero-pastilla">
+        <p class="hp-intro">Si ahorras <strong>S/&nbsp;100 al mes</strong> al 5% TREA durante</p>
+        <div class="chips" role="group" aria-label="Plazo del ejemplo">
+          <button type="button" class="chip" data-anios="10" aria-pressed="false">10 años</button>
+          <button type="button" class="chip" data-anios="20" aria-pressed="false">20 años</button>
+          <button type="button" class="chip" data-anios="30" aria-pressed="true">30 años</button>
+        </div>
+        <p class="hp-monto num"><span class="hp-tendrias">tendrías</span><span id="hpMonto">S/&nbsp;81,538</span></p>
+        <p class="sr" id="hpVivo" aria-live="polite"></p>
+        <div class="hp-barra" aria-hidden="true"><span id="hpBarraAp"></span><span id="hpBarraInt"></span></div>
+        <ul class="hp-leyenda">
+          <li><i class="punto punto--azul" aria-hidden="true"></i>Tú pones <strong class="num" id="hpAportes">S/&nbsp;36,000</strong></li>
+          <li><i class="punto punto--blanco" aria-hidden="true"></i>Los intereses ponen <strong class="num" id="hpIntereses">S/&nbsp;45,538</strong></li>
+        </ul>
+        <p class="hp-nota">Simulación referencial con una TREA de 5% constante. La tasa puede variar. <a href="#legales">Ver supuestos</a></p>
+        <a class="btn btn--blanco" href="#simulador">Simula con tus números</a>
+      </div>
+    </div>
+    <figure class="hero-foto">
+      <img src="img/hero.jpg" width="900" height="945" alt="Hombre sonriente riega una planta con flores amarillas en una maceta blanca">
+    </figure>
+  </div>
+</section>
+
+<!-- ============ ¿QUÉ ES? ============ -->
+<section class="seccion" id="que-es" aria-labelledby="que-es-titulo">
+  <div class="contenedor">
+    <div class="cab-seccion centro">
+      <p class="etiqueta">Lo básico</p>
+      <h2 id="que-es-titulo">¿Qué es el interés compuesto?</h2>
+      <p class="intro">Es ganar intereses no solo sobre el dinero que depositas, sino también sobre los intereses que ese dinero ya generó. Cada vez que te pagan intereses, se suman a tu saldo y, desde ese momento, empiezan a trabajar contigo.</p>
+    </div>
+
+    <ol class="pasos">
+      <li class="paso">
+        <svg class="paso-icono" viewBox="0 0 120 96" aria-hidden="true">
+          <rect x="38" y="10" width="44" height="76" rx="7" fill="none" stroke="#002850" stroke-width="2"/>
+          <line x1="54" y1="18" x2="66" y2="18" stroke="#002850" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="60" cy="50" r="13" fill="#FFDC00"/>
+          <text x="60" y="55" text-anchor="middle" font-size="13" font-weight="700" fill="#002850" font-family="inherit">S/</text>
+          <path d="M14 50 H30 M24 44 L30 50 L24 56" fill="none" stroke="#002850" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span class="paso-num">1</span>
+        <h3>Ahorras</h3>
+        <p>Depositas tu dinero en una cuenta que paga intereses.</p>
+      </li>
+      <li class="paso">
+        <svg class="paso-icono" viewBox="0 0 120 96" aria-hidden="true">
+          <circle cx="52" cy="52" r="26" fill="none" stroke="#002850" stroke-width="2"/>
+          <text x="52" y="59" text-anchor="middle" font-size="18" font-weight="700" fill="#002850" font-family="inherit">S/</text>
+          <circle cx="86" cy="28" r="15" fill="#FFDC00"/>
+          <text x="86" y="33" text-anchor="middle" font-size="14" font-weight="800" fill="#002850" font-family="inherit">%</text>
+          <path d="M76 40 L70 46" stroke="#002850" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <span class="paso-num">2</span>
+        <h3>Ganas intereses</h3>
+        <p>Tu cuenta te paga intereses sobre tu saldo. Cuánto, te lo dice la TREA (Tasa de Rendimiento Efectivo Anual): en la Cuenta Soles Pibank es 5% al año, o sea, S/&nbsp;5 por cada S/&nbsp;100 que mantienes un año.</p>
+      </li>
+      <li class="paso">
+        <svg class="paso-icono" viewBox="0 0 120 96" aria-hidden="true">
+          <ellipse cx="50" cy="76" rx="22" ry="6" fill="none" stroke="#002850" stroke-width="2"/>
+          <path d="M28 76 V68 M72 76 V68" stroke="#002850" stroke-width="2"/>
+          <ellipse cx="50" cy="68" rx="22" ry="6" fill="#fff" stroke="#002850" stroke-width="2"/>
+          <path d="M28 68 V60 M72 68 V60" stroke="#002850" stroke-width="2"/>
+          <ellipse cx="50" cy="60" rx="22" ry="6" fill="#fff" stroke="#002850" stroke-width="2"/>
+          <ellipse cx="50" cy="50" rx="22" ry="6" fill="#FFDC00" stroke="#002850" stroke-width="2"/>
+          <path d="M28 50 V58 M72 50 V58" stroke="#002850" stroke-width="2"/>
+          <path d="M84 62 A20 20 0 1 0 72 26" fill="none" stroke="#002850" stroke-width="2" stroke-linecap="round"/>
+          <path d="M70 18 L72 26 L64 28" fill="none" stroke="#002850" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span class="paso-num">3</span>
+        <h3>Se suman y vuelven a ganar</h3>
+        <p>Esos intereses pasan a ser parte de tu saldo, así que la próxima vez también ganan intereses. Y así, una y otra vez.</p>
+      </li>
+    </ol>
+
+    <div class="comparacion">
+      <div class="comp-card">
+        <p class="comp-tag">Interés simple</p>
+        <p>Con S/&nbsp;1,000 al 5% TREA, siempre ganas sobre los mismos S/&nbsp;1,000: <strong>S/&nbsp;50.00 cada año</strong>, ni más ni menos.</p>
+      </div>
+      <div class="comp-card comp-card--destacada">
+        <p class="comp-tag">Interés compuesto</p>
+        <p>Ganas sobre tus S/&nbsp;1,000 más los intereses que ya sumaste: <strong>S/&nbsp;50.00, luego S/&nbsp;52.50, luego S/&nbsp;55.13…</strong> cada año un poco más.</p>
+      </div>
+    </div>
+
+    <!-- Laboratorio año a año -->
+    <div class="lab" id="laboratorio">
+      <div class="lab-texto">
+        <p class="etiqueta">Míralo año por año</p>
+        <h3 class="lab-titulo">Tus primeros S/&nbsp;1,000 al 5% TREA, sin agregar nada más</h3>
+        <p class="lab-anio"><span>Año</span> <strong class="num" id="labAnio">0</strong></p>
+        <p class="lab-narracion" id="labTexto">Depositas S/&nbsp;1,000. Todavía no has ganado intereses.</p>
+        <p class="sr" id="labVivo" aria-live="polite"></p>
+        <p class="lab-formula num" id="labFormula">S/&nbsp;1,000 × 1.05<sup>0</sup> = S/&nbsp;1,000.00</p>
+        <div class="lab-control">
+          <button type="button" class="btn-play" id="labPlay" aria-label="Reproducir: avanzar año por año">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path class="ico-play" d="M8 5v14l11-7z"/><path class="ico-pausa" d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg>
+          </button>
+          <div class="rango-envoltura">
+            <label class="sr" for="labRango">Año</label>
+            <input type="range" id="labRango" min="0" max="30" step="1" value="0" class="rango">
+            <div class="rango-marcas" aria-hidden="true"><span style="--pos:0">0</span><span style="--pos:.3333">10</span><span style="--pos:.6667">20</span><span style="--pos:1">30 años</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="lab-visual">
+        <div class="lab-barras" aria-hidden="true">
+          <div class="lab-col">
+            <strong class="lab-valor num" id="labSimpleV">S/&nbsp;1,000</strong>
+            <div class="lab-pila">
+              <span class="seg seg--deposito" id="labS1"></span>
+              <span class="seg seg--simple" id="labS2"></span>
+            </div>
+            <p class="lab-nombre">Interés simple</p>
+          </div>
+          <div class="lab-col lab-col--comp">
+            <strong class="lab-valor num" id="labCompV">S/&nbsp;1,000</strong>
+            <div class="lab-pila">
+              <span class="seg seg--deposito" id="labC1"></span>
+              <span class="seg seg--simple" id="labC2"></span>
+              <span class="seg seg--ii" id="labC3"></span>
+            </div>
+            <p class="lab-nombre">Interés compuesto</p>
+          </div>
+        </div>
+        <ul class="leyenda">
+          <li><i class="punto" style="--c:var(--azul)"></i>Tu depósito</li>
+          <li><i class="punto" style="--c:var(--celeste)"></i>Intereses por tu dinero</li>
+          <li><i class="punto punto--borde" style="--c:var(--amarillo)"></i>Intereses de tus intereses</li>
+        </ul>
+        <p class="lab-dif">Con interés compuesto tienes <strong class="num" id="labDif">S/&nbsp;0.00</strong> más que con interés simple.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SIMULADOR ============ -->
+<section class="seccion seccion--gris" id="simulador" aria-labelledby="sim-titulo">
+  <div class="contenedor">
+    <div class="cab-seccion centro">
+      <p class="etiqueta">Simulador</p>
+      <h2 id="sim-titulo">Simula cuánto puede crecer tu dinero</h2>
+      <p class="intro">Cambia los valores y mira el resultado al instante. La parte amarilla del gráfico es lo que hace la diferencia: intereses que generaron tus propios intereses.</p>
+    </div>
+
+    <div class="sim">
+      <form class="sim-panel" id="simForm" novalidate>
+        <fieldset class="escenarios">
+          <legend>Prueba un ejemplo</legend>
+          <div class="chips chips--claro">
+            <button type="button" class="chip" data-escenario="emergencia" aria-pressed="false">Fondo de emergencia</button>
+            <button type="button" class="chip" data-escenario="estudios" aria-pressed="false">Estudios de tus hijos</button>
+            <button type="button" class="chip" data-escenario="jubilacion" aria-pressed="false">Tu jubilación</button>
+            <button type="button" class="chip" data-escenario="unico" aria-pressed="false">Un solo depósito</button>
+          </div>
+        </fieldset>
+
+        <div class="campo">
+          <div class="campo-cab">
+            <label for="fInicial">¿Con cuánto empiezas?</label>
+          </div>
+          <div class="entrada"><span class="entrada-pre" aria-hidden="true">S/</span><input id="fInicial" type="text" inputmode="decimal" autocomplete="off" value="1,000" aria-describedby="hInicial"></div>
+          <input type="range" class="rango" id="rInicial" aria-label="Monto inicial" min="0" max="1" step="1">
+          <p class="campo-ayuda" id="hInicial">Monto inicial. En Pibank puedes empezar desde el primer sol.</p>
+        </div>
+
+        <div class="campo">
+          <div class="campo-cab">
+            <label for="fMensual">¿Cuánto ahorrarás cada mes?</label>
+          </div>
+          <div class="entrada"><span class="entrada-pre" aria-hidden="true">S/</span><input id="fMensual" type="text" inputmode="decimal" autocomplete="off" value="200" aria-describedby="hMensual"></div>
+          <input type="range" class="rango" id="rMensual" aria-label="Aporte mensual" min="0" max="1" step="1">
+          <p class="campo-ayuda" id="hMensual">Aporte mensual. Puedes poner 0 si solo harás un depósito.</p>
+        </div>
+
+        <div class="campo">
+          <div class="campo-cab">
+            <label for="fTrea">Tasa de rendimiento (TREA)</label>
+            <button type="button" class="mini-chip" id="btnTreaPibank">Usar 5% Pibank</button>
+          </div>
+          <div class="entrada entrada--pct"><input id="fTrea" type="text" inputmode="decimal" autocomplete="off" value="5" aria-describedby="hTrea"><span class="entrada-suf" aria-hidden="true">%</span></div>
+          <input type="range" class="rango" id="rTrea" aria-label="TREA anual en porcentaje" min="0" max="12" step="0.1">
+          <p class="campo-ayuda" id="hTrea">La Cuenta Soles Pibank paga 5% TREA. Puedes probar otras tasas solo como ejemplo, para comparar.</p>
+        </div>
+
+        <div class="campo">
+          <div class="campo-cab">
+            <label for="rAnios">¿Por cuánto tiempo?</label>
+            <output class="campo-valor num" id="oAnios" for="rAnios">30 años</output>
+          </div>
+          <input type="range" class="rango" id="rAnios" min="1" max="40" step="1" value="30">
+          <div class="rango-marcas" aria-hidden="true"><span style="--pos:0">1 año</span><span style="--pos:.2308">10</span><span style="--pos:.4872">20</span><span style="--pos:.7436">30</span><span style="--pos:1">40 años</span></div>
+        </div>
+      </form>
+
+      <button type="button" class="sim-mini" id="simMini" hidden>
+        <span>En <b id="miniAnios">30 años</b> tendrías</span>
+        <strong id="miniSaldo" class="num">S/&nbsp;0</strong>
+      </button>
+
+      <div class="sim-resultado">
+        <p class="sr" id="simVivo" aria-live="polite"></p>
+        <div class="res-cab">
+          <p class="res-intro">En <span id="resAnios">30 años</span>, con <span id="resTasa">5% TREA</span>, tendrías</p>
+          <div class="pastilla pastilla--res">
+            <span class="res-monto num" id="resSaldo">S/&nbsp;0</span>
+            <span class="res-mult" id="resMult">Tu dinero ×1.0</span>
+          </div>
+          <p class="res-hipotetica" id="resHipo" hidden></p>
+        </div>
+
+        <ul class="desglose">
+          <li><i class="punto" style="--c:var(--g-aportes)" aria-hidden="true"></i><span>Lo que pusiste tú</span><strong class="num" id="resAportes">S/&nbsp;0</strong></li>
+          <li><i class="punto" style="--c:var(--g-simple)" aria-hidden="true"></i><span>Intereses por tu dinero</span><strong class="num" id="resSimple">S/&nbsp;0</strong></li>
+          <li class="desglose-ii"><i class="punto" style="--c:var(--amarillo)" aria-hidden="true"></i><span>Intereses de tus intereses</span><strong class="num" id="resII">S/&nbsp;0</strong></li>
+        </ul>
+        <p class="res-total">Intereses totales: <strong class="num" id="resInteres">S/&nbsp;0</strong> <span id="resPct"></span></p>
+
+        <div class="grafico" id="grafico" tabindex="0" role="slider" aria-label="Tu saldo año por año" aria-valuemin="1" aria-valuemax="30" aria-valuenow="30" aria-describedby="graficoResumen">
+          <div class="grafico-tip" id="graficoTip" hidden></div>
+        </div>
+        <p class="sr" id="graficoResumen"></p>
+        <p class="grafico-ayuda">Pasa el cursor, toca una barra o usa las flechas del teclado para ver cada año.</p>
+
+        <ul class="insights" id="insights"></ul>
+
+        <p class="res-nota">Simulación referencial: no es una oferta ni garantiza rendimientos. Supone una TREA constante durante todo el plazo, aportes al final de cada mes y sin retiros. No incluye ITF ni impuestos y no descuenta la inflación. <a href="#legales">Ver supuestos</a></p>
+
+        <div class="res-acciones">
+          <a class="btn" id="resCta" href="https://registro.pibank.pe/" target="_blank" rel="noopener">Abre tu Cuenta Soles</a>
+          <button type="button" class="btn btn--linea" id="btnCompartir">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1M14 10a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            <span>Copiar enlace</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <details class="tabla-anual" id="tablaAnual">
+      <summary>Ver el detalle año por año</summary>
+      <div class="tabla-scroll" tabindex="0" role="region" aria-label="Detalle año por año">
+        <table>
+          <caption class="sr">Evolución de tu ahorro año por año</caption>
+          <thead>
+            <tr><th scope="col">Año</th><th scope="col">Lo que pusiste</th><th scope="col">Intereses del año</th><th scope="col">Intereses de tus intereses</th><th scope="col">Saldo</th></tr>
+          </thead>
+          <tbody id="tablaCuerpo"></tbody>
+        </table>
+      </div>
+    </details>
+  </div>
+</section>
+
+<!-- ============ LARGO PLAZO ============ -->
+<section class="seccion" id="largo-plazo" aria-labelledby="lp-titulo">
+  <div class="contenedor">
+    <div class="cab-seccion centro">
+      <p class="etiqueta">El factor tiempo</p>
+      <h2 id="lp-titulo">¿Por qué el largo plazo hace la diferencia?</h2>
+      <p class="intro">Porque el interés compuesto se acelera con el tiempo: cada año ganas sobre un saldo más grande que el anterior. Los primeros años parecen lentos; los últimos son los que más rinden.</p>
+    </div>
+
+    <figure class="macetas">
+      <div class="macetas-img">
+        <img src="img/macetas.jpg" width="1300" height="760" loading="lazy" alt="Tres macetas blancas: un brote pequeño, una planta mediana y una planta grande llena de flores amarillas">
+      </div>
+      <ol class="macetas-datos">
+        <li><span class="md-anio">Año 1</span><strong class="num" id="mt1">S/&nbsp;1,050</strong></li>
+        <li><span class="md-anio">Año 10</span><strong class="num" id="mt10">S/&nbsp;1,629</strong></li>
+        <li><span class="md-anio">Año 30</span><strong class="num" id="mt30">S/&nbsp;4,322</strong></li>
+      </ol>
+      <figcaption>El mismo depósito de S/&nbsp;1,000 al 5% TREA, sin agregar nada más. Lo único que cambia es el tiempo.</figcaption>
+    </figure>
+
+    <div class="lp-grid">
+      <article class="tarjeta" aria-labelledby="dec-titulo">
+        <h3 id="dec-titulo">Cada década rinde más que la anterior</h3>
+        <p class="tarjeta-sub">Ahorrando S/&nbsp;100 al mes al 5% TREA durante 40 años. Tu aporte es el mismo en cada década; los intereses, no.</p>
+        <div class="decadas" id="decadas"></div>
+        <ul class="leyenda leyenda--izq">
+          <li><i class="punto punto--linea"></i>Lo que aportas: S/&nbsp;12,000 por década</li>
+          <li><i class="punto punto--borde" style="--c:var(--amarillo)"></i>Intereses ganados en la década</li>
+        </ul>
+        <p class="tarjeta-remate" id="decRemate"></p>
+      </article>
+
+      <article class="tarjeta" aria-labelledby="r72-titulo">
+        <h3 id="r72-titulo">La regla del 72</h3>
+        <p class="tarjeta-sub">Divide 72 entre la tasa y sabrás, más o menos, en cuántos años se duplica tu dinero.</p>
+        <div class="chips chips--claro" role="group" aria-label="Elige una tasa">
+          <button type="button" class="chip" data-tasa="2" aria-pressed="false">2%</button>
+          <button type="button" class="chip" data-tasa="3" aria-pressed="false">3%</button>
+          <button type="button" class="chip" data-tasa="4" aria-pressed="false">4%</button>
+          <button type="button" class="chip" data-tasa="5" aria-pressed="true">5% Pibank</button>
+        </div>
+        <p class="r72-res"><span class="num" id="r72Anios">14.4</span> <span>años</span></p>
+        <p class="r72-cuenta num" id="r72Cuenta">72 ÷ 5 = 14.4 · cálculo exacto: 14.2 años</p>
+        <div class="linea-tiempo" id="r72Linea" aria-hidden="true"></div>
+        <p class="tarjeta-nota" id="r72Nota"></p>
+        <p class="tarjeta-pie"><a class="enlace-flecha" href="#simulador">Pruébalo con tus números →</a></p>
+      </article>
+    </div>
+
+    <article class="espera" aria-labelledby="espera-titulo">
+      <div class="espera-cab">
+        <h3 id="espera-titulo">El costo de esperar</h3>
+        <p>Lucía y Diego ahorran S/&nbsp;200 al mes al 5% TREA hasta los 60 años. La única diferencia es cuándo empiezan.</p>
+      </div>
+      <div class="espera-control">
+        <p class="espera-valor" aria-hidden="true">Diego empieza <strong class="num" id="oEspera">10 años</strong> después que Lucía</p>
+        <label class="sr" for="rEspera">Años que Diego espera para empezar</label>
+        <input type="range" class="rango" id="rEspera" min="1" max="20" step="1" value="10">
+      </div>
+      <div class="personas">
+        <div class="persona">
+          <img src="img/p-lucia.jpg" width="280" height="280" loading="lazy" alt="Retrato de Lucía">
+          <div>
+            <p class="persona-nombre">Lucía <span>empieza a los 25</span></p>
+            <p class="persona-dato">Pone en total <strong class="num" id="lAportes">S/&nbsp;84,000</strong></p>
+            <p class="persona-dato persona-dato--a60">A los 60 tendría</p>
+            <p class="persona-monto num" id="lSaldo">S/&nbsp;221,693</p>
+          </div>
+          <div class="persona-barra"><span id="lBarra"></span></div>
+        </div>
+        <div class="persona">
+          <img src="img/p-diego.jpg" width="280" height="280" loading="lazy" alt="Retrato de Diego">
+          <div>
+            <p class="persona-nombre">Diego <span id="dEdad">empieza a los 35</span></p>
+            <p class="persona-dato">Pone en total <strong class="num" id="dAportes">S/&nbsp;60,000</strong></p>
+            <p class="persona-dato persona-dato--a60">A los 60 tendría</p>
+            <p class="persona-monto num" id="dSaldo">S/&nbsp;117,147</p>
+          </div>
+          <div class="persona-barra"><span id="dBarra"></span></div>
+        </div>
+      </div>
+      <p class="espera-remate" id="esperaRemate"></p>
+      <p class="sr" id="esperaVivo" aria-live="polite"></p>
+    </article>
+  </div>
+</section>
+
+<!-- ============ CLAVES ============ -->
+<section class="seccion seccion--gris" id="claves" aria-labelledby="claves-titulo">
+  <div class="contenedor claves-grid">
+    <div class="claves-cab">
+      <p class="etiqueta">Para aprovecharlo</p>
+      <h2 id="claves-titulo">5 claves para que el interés compuesto juegue a tu favor</h2>
+      <a class="btn" href="#simulador">Simula con tus números</a>
+    </div>
+    <ol class="claves">
+      <li>
+        <h3>Empieza hoy, aunque sea poco</h3>
+        <p>Al 5% TREA, S/&nbsp;50 al mes desde hoy te dejarían <strong class="num" id="k50">S/&nbsp;40,769</strong> en 30 años. Si esperas 10 años para empezar, necesitarías el doble, S/&nbsp;100 al mes, para llegar a <span class="num" id="k100">S/&nbsp;40,580</span> en la misma fecha, y pondrías <span class="num" id="kDif">S/&nbsp;6,000</span> más.</p>
+      </li>
+      <li>
+        <h3>Sé constante</h3>
+        <p>Ahorra un monto fijo cada mes, apenas recibas tu sueldo. Como una planta que riegas seguido, tu ahorro sigue creciendo.</p>
+      </li>
+      <li>
+        <h3>No retires tus intereses</h3>
+        <p>Si los retiras, dejan de generar intereses. Déjalos en tu cuenta el mayor tiempo posible para que sigan trabajando.</p>
+      </li>
+      <li>
+        <h3>Compara la TREA</h3>
+        <p>Es la tasa que te permite comparar cuánto rinde una cuenta en un año, porque considera sus comisiones y gastos. A mayor TREA, más rápido crece tu dinero.</p>
+      </li>
+      <li>
+        <h3>Ten paciencia</h3>
+        <p>Los primeros años el crecimiento parece lento. Es normal: la curva se empina con el tiempo y lo mejor llega al final.</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- ============ PREGUNTAS ============ -->
+<section class="seccion" id="preguntas" aria-labelledby="faq-titulo">
+  <div class="contenedor contenedor--angosto">
+    <div class="cab-seccion centro">
+      <p class="etiqueta">Hablemos claro</p>
+      <h2 id="faq-titulo">Preguntas frecuentes</h2>
+    </div>
+    <div class="faq">
+      <details>
+        <summary>¿Qué es la TREA?</summary>
+        <p>Es la Tasa de Rendimiento Efectivo Anual. Sirve para comparar cuánto rinden en un año las cuentas de ahorro y los depósitos, porque además de la tasa de interés considera las comisiones y gastos del producto (no incluye impuestos como el ITF). En las cuentas de ahorro se calcula con un ejemplo estándar: un monto referencial durante un año, sin movimientos adicionales a la apertura. Por eso es la tasa que conviene usar para comparar.</p>
+      </details>
+      <details>
+        <summary>¿En qué se diferencian la TEA y la TREA?</summary>
+        <p>La TEA (Tasa Efectiva Anual) es la tasa de interés que paga la cuenta en términos anuales. La TREA considera además las comisiones y gastos del producto. En la Cuenta Soles Pibank ambas son iguales, 5%, porque la cuenta no tiene comisiones ni gastos obligatorios asociados.</p>
+      </details>
+      <details>
+        <summary>¿Cada cuánto se suman los intereses a mi cuenta?</summary>
+        <p>En la Cuenta Soles Pibank los intereses se calculan sobre tu saldo promedio del mes y se abonan el último día de cada mes. Desde ese momento forman parte de tu saldo y también generan intereses. Por eso el simulador los suma mes a mes.</p>
+      </details>
+      <details>
+        <summary>¿Cómo calcula este simulador?</summary>
+        <p>Convierte la TREA en su tasa mensual equivalente, (1 + TREA)<sup>1/12</sup> − 1, y la aplica mes a mes sobre tu saldo, con los aportes al final de cada mes y sin retiros. Así, S/&nbsp;1,000 al 5% durante 12 meses se convierten en S/&nbsp;1,050.00, igual que en el ejemplo de la Cuenta Soles Pibank.</p>
+        <p>Es una aproximación educativa: en la cuenta real los intereses se calculan sobre tu saldo promedio mensual con la TEA (base de 360 días), así que lo que recibas puede variar según las fechas de tus movimientos. Revisa el detalle en <a href="https://prdpistdoceastus2.blob.core.windows.net/documentos1/Web/FormulasEjemplos_CuentaSolesPibank.pdf" target="_blank" rel="noopener">Fórmulas y ejemplos</a>.</p>
+        <p>Para separar los «intereses por tu dinero» de los «intereses de tus intereses», tomamos como referencia lo que cada depósito ganaría con interés simple: la TREA por el tiempo que lleva en la cuenta (por ejemplo, S/&nbsp;100 durante 2 años y medio al 5% ganarían S/&nbsp;12.50). Todo lo que ganas por encima de eso son «intereses de tus intereses». Como la TREA es la tasa de un año completo, mientras un depósito tiene menos de un año todo lo que gana cuenta como «intereses por tu dinero»: el efecto compuesto empieza a notarse desde el segundo año.</p>
+      </details>
+      <details>
+        <summary>¿Funciona igual en las inversiones?</summary>
+        <p>El principio es el mismo: si reinviertes lo que ganas, tus ganancias también generan ganancias. La diferencia está en el riesgo. En una cuenta de ahorros conoces la TREA vigente y tu depósito está cubierto por el Fondo de Seguro de Depósitos, según su cobertura vigente. En inversiones como fondos mutuos o acciones, el rendimiento no está asegurado y puede ser negativo.</p>
+      </details>
+      <details>
+        <summary>¿Qué pasa si retiro mis intereses?</summary>
+        <p>Pierdes el efecto compuesto: los intereses que retiras dejan de generar nuevos intereses y tu dinero vuelve a crecer como con interés simple. Puedes disponer de tu dinero cuando lo necesites, pero mientras más tiempo lo dejes, más rinde.</p>
+      </details>
+      <details>
+        <summary>¿El interés compuesto también puede jugar en contra?</summary>
+        <p>Sí, cuando tienes deudas. Los créditos también cobran intereses con tasas efectivas anuales (para compararlos se usa la TCEA) y, mientras más tiempo tardas en pagarlos, más intereses pagas en total: una deuda cara que arrastras por años puede costarte mucho más de lo que recibiste. Por eso conviene evitar las deudas caras y poner el tiempo a tu favor, ahorrando.</p>
+      </details>
+      <details>
+        <summary>¿Los resultados están garantizados?</summary>
+        <p>No. Es una simulación referencial con fines educativos: supone que la tasa se mantiene igual durante todo el plazo, y las tasas pueden cambiar. Para conocer las condiciones vigentes, consulta el <a href="https://prdpistdoceastus2.blob.core.windows.net/documentos1/Web/Tarifario_CuentaSolesPibank.pdf" target="_blank" rel="noopener">Tarifario</a> y la <a href="https://prdpistdoceastus2.blob.core.windows.net/documentos1/ONBOARDING/CartillaInformacion_CuentaSolesPibank.pdf" target="_blank" rel="noopener">Cartilla de Información</a>.</p>
+      </details>
+      <details>
+        <summary>¿Y la inflación?</summary>
+        <p>El simulador muestra montos nominales, es decir, soles de cada año futuro. Con la inflación los precios suben y esos soles alcanzan para menos. Por ejemplo, si la inflación promediara 2% al año (el centro del rango meta del BCRP), los <span class="num" id="infNominal">S/&nbsp;81,538</span> del ejemplo de 30 años equivaldrían a unos <span class="num" id="infReal">S/&nbsp;45,000</span> de hoy. Por eso importa que tu dinero gane intereses: el dinero que no rinde pierde poder de compra.</p>
+      </details>
+      <details>
+        <summary>¿Mi dinero está protegido?</summary>
+        <p>Sí, hasta un monto máximo. Los depósitos de la Cuenta Soles Pibank están cubiertos por el Fondo de Seguro de Depósitos (FSD) hasta un monto máximo de cobertura que se actualiza cada trimestre; lo que supere ese monto no está cubierto. Consulta las condiciones y el monto vigente en <a href="https://www.fsd.org.pe/" target="_blank" rel="noopener">fsd.org.pe</a>.</p>
+      </details>
+      <details>
+        <summary>¿Con cuánto puedo empezar en Pibank?</summary>
+        <p>Desde el primer sol. La Cuenta Soles Pibank no tiene monto mínimo de apertura ni comisión de mantenimiento. Es una cuenta de ahorros 100% digital para personas naturales: si eres mayor de edad y tienes DNI, celular y correo electrónico, la abres en pibank.pe con «Hazte cliente».</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CIERRE ============ -->
+<section class="cierre" aria-labelledby="cierre-titulo">
+  <div class="contenedor cierre-grid">
+    <div class="pastilla cierre-pastilla">
+      <h2 id="cierre-titulo">Pon el interés compuesto a trabajar para ti</h2>
+      <p class="cierre-producto">Cuenta Soles Pibank</p>
+      <p class="cierre-tasa"><span class="num">5%</span> TREA</p>
+      <ul class="cierre-lista">
+        <li>Desde el primer sol</li>
+        <li>Sin comisiones</li>
+        <li>Tu dinero siempre disponible</li>
+      </ul>
+      <a class="btn btn--blanco" href="https://registro.pibank.pe/" target="_blank" rel="noopener">Abre tu cuenta</a>
+    </div>
+    <figure class="cierre-foto">
+      <img src="img/cierre.jpg" width="760" height="640" loading="lazy" alt="Mujer sonriente revisa su celular junto a una maceta con flores amarillas">
+    </figure>
+  </div>
+</section>
+
+<!-- ============ LEGALES ============ -->
+<section class="legales" id="legales" aria-label="Información legal">
+  <div class="contenedor">
+    <div class="caja-textolegal">
+      <img src="img/franja-hablemos-simple.png" width="300" height="74" alt="Hablemos más simple. Te rinde 5.00% TREA" loading="lazy">
+      <div class="caja-textolegal-texto">
+        <p><strong>TEA es igual a TREA de 5% para una Cuenta de Ahorros Soles Pibank por un monto de S/&nbsp;1,000.00 a 12 meses, considerando que no se realiza ningún movimiento adicional a la apertura de la cuenta, el importe final del período será de S/&nbsp;1,050.00. Saldo mínimo de equilibrio para obtener rendimiento: S/&nbsp;0.00. No incluye ITF.</strong></p>
+        <p>Sin monto mínimo de apertura ni comisión de mantenimiento. Cuenta para personas naturales, 100% digital y permite realizar operaciones exclusivamente a través de canales digitales Pibank. No permite operaciones en efectivo, uso de agencias, cajeros automáticos, agentes corresponsales, ni emisión de tarjeta de débito, cheques u otros títulos valores. Transferencias entre cuentas e interbancarias deben realizarse en canales digitales Pibank, sin comisión (aplica ITF de corresponder y comisión por envío físico de estado de cuenta, según tarifario y si cliente lo solicita). Depósito cubierto por el Fondo de Seguro de Depósitos (FSD); para información sobre condiciones y monto máximo de cobertura vigente, sujeto a actualizaciones trimestrales, consulta <a href="https://www.fsd.org.pe/" target="_blank" rel="noopener">fsd.org.pe</a>.</p>
+      </div>
+    </div>
+    <p><strong>Simulación referencial con fines educativos.</strong> No constituye una oferta ni garantiza rendimientos futuros. Supuestos: la TREA se mantiene constante durante todo el plazo; los intereses se capitalizan mensualmente con la tasa mensual equivalente a la TREA; los aportes se realizan al final de cada mes y no hay retiros. Las tasas distintas de 5% TREA son hipotéticas, se muestran solo para comparar y no corresponden a productos de Pibank. Montos brutos y nominales: no consideran el ITF ni los impuestos que pudieran aplicar durante el plazo simulado, ni descuentan la inflación. Los casos de Lucía y Diego son ilustrativos.</p>
+    <p>Para más información sobre términos y condiciones de la cuenta, tasas, comisiones y gastos, consulta nuestro <a href="https://prdpistdoceastus2.blob.core.windows.net/documentos1/Web/Tarifario_CuentaSolesPibank.pdf" target="_blank" rel="noopener">Tarifario</a> y <a href="https://prdpistdoceastus2.blob.core.windows.net/documentos1/ONBOARDING/CartillaInformacion_CuentaSolesPibank.pdf" target="_blank" rel="noopener">Cartilla de Información</a> en <a href="https://pibank.pe/cuenta-soles-pibank/" target="_blank" rel="noopener">www.pibank.pe</a> o comunícate con nuestra Banca Telefónica al <span class="nowrap">0-800-71626</span>. Esta información se proporciona de acuerdo con el Reglamento de Gestión de Conducta de Mercado del Sistema Financiero.</p>
+  </div>
+</section>
+
+</main>
+
+<!-- ============ PIE ============ -->
+<footer class="pie">
+  <div class="contenedor pie-grid">
+    <img src="img/logo-pibank-azul.svg" width="129" height="33" alt="Pibank" loading="lazy">
+    <nav aria-label="Enlaces de Pibank">
+      <a href="https://pibank.pe/cuenta-soles-pibank/" target="_blank" rel="noopener">Cuenta Soles</a>
+      <a href="https://pibank.pe/quienes-somos/" target="_blank" rel="noopener">Quiénes somos</a>
+      <a href="https://pibank.pe/centro-de-ayuda/" target="_blank" rel="noopener">Centro de ayuda</a>
+      <a href="https://prdpistdoceastus2.blob.core.windows.net/documentos1/Web/Tarifario_CuentaSolesPibank.pdf" target="_blank" rel="noopener">Tasas y tarifas</a>
+      <a href="https://pibank.pe/politicas-de-privacidad/" target="_blank" rel="noopener">Políticas de privacidad</a>
+      <a href="https://pibank.pe/informacion-legal/" target="_blank" rel="noopener">Información legal</a>
+    </nav>
+    <a class="pie-reclamos" href="https://pibank.pe/libro-de-reclamaciones/" target="_blank" rel="noopener">
+      <img src="img/libro-de-reclamaciones.png" width="150" height="85" alt="Libro de Reclamaciones" loading="lazy">
+    </a>
+  </div>
+  <p class="pie-legal">Pibank ©. Pibank es una marca registrada ante INDECOPI, cuyo titular es Banco Pichincha | Av. Ricardo Palma 278, Miraflores – Lima-Perú | RUC: 20100105862. Pibank es una marca de Banco Pichincha Perú S.A., entidad supervisada por la Superintendencia de Banca, Seguros y AFP (SBS).</p>
+</footer>
+
+<div class="aviso" id="aviso" role="status" aria-live="polite"></div>
+
+<script src="js/simulador.js?v=2"></script>
+</body>
+</html>
